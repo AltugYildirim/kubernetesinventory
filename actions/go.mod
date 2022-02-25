@@ -1,4 +1,4 @@
-module github.com/altugyildirim/actions
+module github.com/altugyildirim/kubernetesinventory/actions
 
 go 1.17
 
