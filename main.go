@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -90,7 +91,16 @@ func listDeployments(clientset *kubernetes.Clientset, namespace *string) {
 		log.Println("Deploy Name: ", item.GetName())
 		log.Println("NameSpace: ", item.GetNamespace())
 		log.Println("UID: ", item.GetUID())
+		log.Println("Image: ", item.Spec.Template.Spec.Containers[0].Image)
+		log.Println("Version: ", strings.Split(item.Spec.Template.Spec.Containers[0].Image, ":")[1])
 		log.Println("-----------------")
+	}
+	if err != nil {
+		panic(err)
+	}
+	for _, d := range deployments.Items {
+		fmt.Printf(" * %s (%d replicas)\n", d.Name, *d.Spec.Replicas)
+		fmt.Printf(" * %s (%d replicas)\n", d.Name, *&d.Spec.Template.Spec.Containers[0].Image)
 	}
 }
 
