@@ -3,7 +3,7 @@ package main
 import (
     "flag"
     "fmt"
-    "github.com/altugyildirim/actions"
+    "github.com/altugyildirim/kubernetesinventory/actions"
     
 )
 func main() {
