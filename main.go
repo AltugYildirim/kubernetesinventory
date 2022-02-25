@@ -2,16 +2,26 @@ package main
 
 import (
     "flag"
-    "fmt"
     "github.com/altugyildirim/kubernetesinventory/actions"
-    
 )
+
 func main() {
-    jobName := flag.String("jobname", "test-job", "The name of the job")
-    containerImage := flag.String("image", "ubuntu:latest", "Name of the container image")
-    entryCommand := flag.String("command", "ls", "The command to run inside the container")
+
+
+    cmd := flag.String("cmd", "list", "Should be a string")
+    ns := flag.String("ns", "default", "Namespace is a string")
+    resource := flag.String("rs", "pods", "Resource is a string")
+    file := flag.String("file", "pods", "Resource is a string")
+
 
     flag.Parse()
 
-    fmt.Printf("Args : %s %s %s\n", *jobName, *containerImage, *entryCommand)
+    actions.List("deploy","default")
+//    switch *cmd {
+//    case "deploy":
+//        actions.Deploy(file)
+//    default:
+//        actions.List(resource, ns)
+//    }
 }
+
