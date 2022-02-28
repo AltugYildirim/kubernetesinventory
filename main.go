@@ -141,7 +141,7 @@ func main() {
 	//containerImage := flag.String("image", "ubuntu:latest", "Name of the container image")
 	//entryCommand := flag.String("command", "ls", "The command to run inside the container")
 	ns := flag.String("ns", "default", "The name of the namespace")
-	resource := flag.String("rs", "deploy", "Resource is a string")
+	resource := flag.String("rs", "application", "Resource is a string")
 
 	flag.Parse()
 
