@@ -5,7 +5,11 @@ go 1.17
 require k8s.io/client-go v0.20.2 //v0.20.2
 
 require (
-	github.com/altugyildirim/kubernetesinventory/actions v0.0.0-20220225143151-97006b95bc27 // indirect
+	k8s.io/api v0.20.2
+	k8s.io/apimachinery v0.20.2
+)
+
+require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-logr/logr v0.2.0 // indirect
 	github.com/gogo/protobuf v1.3.1 // indirect
@@ -27,8 +31,6 @@ require (
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
-	k8s.io/api v0.20.2 // indirect
-	k8s.io/apimachinery v0.20.2 // indirect
 	k8s.io/klog/v2 v2.4.0 // indirect
 	k8s.io/utils v0.0.0-20201110183641-67b214c5f920 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.0.2 // indirect
