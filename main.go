@@ -19,6 +19,7 @@ import (
 type Collection struct {
 	Name       string
 	Namespaces string
+	Replicas   *int32
 	//UID string
 	Image    string
 	Version  string
@@ -68,18 +69,27 @@ func listApplicationsDetails(clientset *kubernetes.Clientset, namespace *string)
 		panic(err)
 	}
 	for _, item := range deployments.Items {
-		log.Println("Deploy Name: ", item.GetName())
-		log.Println("NameSpace: ", item.GetNamespace())
-		log.Println("UID: ", item.GetUID())
-		log.Println("Image: ", item.Spec.Template.Spec.Containers[0].Image)
-		log.Println("Version: ", strings.Split(item.Spec.Template.Spec.Containers[0].Image, ":")[1])
-		log.Println("-----------------")
-		collectionAdding = Collection{
-			Name:       item.GetName(),
-			Namespaces: item.GetNamespace(),
-			Image:      item.Spec.Template.Spec.Containers[0].Image,
-			Version:    strings.Split(item.Spec.Template.Spec.Containers[0].Image, ":")[1],
-		}
+		// log.Println("Deploy Name: ", item.GetName())
+		// log.Println("NameSpace: ", item.GetNamespace())
+		// log.Println("UID: ", item.GetUID())
+		//log.Println("UID: ", item.Spec.Replicas)
+
+		// log.Println("Image: ", item.Spec.Template.Spec.Containers[0].Image)
+		// log.Println("Version: ", strings.Split(item.Spec.Template.Spec.Containers[0].Image, ":")[1])
+		// log.Println("-----------------")
+
+		collectionAdding.Name = item.GetName()
+		collectionAdding.Namespaces = item.GetNamespace()
+		collectionAdding.Replicas = item.Spec.Replicas
+		collectionAdding.Image = item.Spec.Template.Spec.Containers[0].Image
+		collectionAdding.Version = strings.Split(item.Spec.Template.Spec.Containers[0].Image, ":")[1]
+
+		// collectionAdding = Collection{
+		// 	Name:       item.GetName(),
+		// 	Namespaces: item.GetNamespace(),
+		// 	Image:      item.Spec.Template.Spec.Containers[0].Image,
+		// 	Version:    strings.Split(item.Spec.Template.Spec.Containers[0].Image, ":")[1],
+		// }
 
 	}
 
@@ -128,12 +138,12 @@ func listPods(clientset *kubernetes.Clientset, namespace *string) {
 		log.Println("NameSpace: ", item.GetNamespace())
 		log.Println("Image: ", item.Spec.NodeName)
 		log.Println("Image: ", item.Status.HostIP)
-		for _, status := range item.Status.ContainerStatuses {
-			log.Println("Status Ready: ", status.Ready)
-		}
-		for _, container := range item.Spec.Containers {
-			log.Println("Container Image: ", container.Image)
-		}
+		// for _, status := range item.Status.ContainerStatuses {
+		// 	log.Println("Status Ready: ", status.Ready)
+		// }
+		// for _, container := range item.Spec.Containers {
+		// 	log.Println("Container Image: ", container.Image)
+		// }
 		log.Println("-----------------")
 	}
 }
