@@ -52,6 +52,7 @@ func List(clientset *kubernetes.Clientset, resource *string, namespace *string) 
 
 	if *resource == "application" {
 		listApplicationsDetails(clientset, namespace)
+
 	} else {
 		listPods(clientset, namespace)
 	}
@@ -62,6 +63,7 @@ func listApplicationsDetails(clientset *kubernetes.Clientset, namespace *string)
 	deploycl := clientset.AppsV1().Deployments(*namespace)
 	deployments, err := deploycl.List(context.TODO(), metav1.ListOptions{})
 	var collectionAdding Collection
+
 	if err != nil {
 		panic(err)
 	}

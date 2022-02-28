@@ -29,4 +29,8 @@ func init() {
     }
     ClientSet = kubernetes.NewForConfigOrDie(config)
     
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 653764f301568c602a930174ba086252666708d8
