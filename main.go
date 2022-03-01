@@ -16,16 +16,21 @@ import (
 	clientcmd "k8s.io/client-go/tools/clientcmd"
 )
 
+type Pod struct {
+	PodName  string
+	NodeName string
+	HostIP   string
+	Ready    bool
+}
+
 type Collection struct {
 	Name       string
 	Namespaces string
 	Replicas   *int32
 	//UID string
-	Image    string
-	Version  string
-	NodeName string
-	HostIP   string
-	Ready    bool
+	Image      string
+	Version    string
+	PodDetails []Pod
 }
 
 func connectToK8s() *kubernetes.Clientset {
@@ -84,40 +89,38 @@ func listApplicationsDetails(clientset *kubernetes.Clientset, namespace *string)
 		collectionAdding.Image = item.Spec.Template.Spec.Containers[0].Image
 		collectionAdding.Version = strings.Split(item.Spec.Template.Spec.Containers[0].Image, ":")[1]
 
-		// collectionAdding = Collection{
-		// 	Name:       item.GetName(),
-		// 	Namespaces: item.GetNamespace(),
-		// 	Image:      item.Spec.Template.Spec.Containers[0].Image,
-		// 	Version:    strings.Split(item.Spec.Template.Spec.Containers[0].Image, ":")[1],
-		// }
-
 	}
 
 	if err != nil {
 		panic(err)
 	}
 	for _, item := range pods.Items {
-		log.Println("Pod Name: ", item.GetName())
-		log.Println("NameSpace: ", item.GetNamespace())
-		log.Println("Image: ", item.Spec.NodeName)
-		log.Println("Image: ", item.Status.HostIP)
+		// log.Println("Pod Name: ", item.GetName())
+		// log.Println("NameSpace: ", item.GetNamespace())
+		// log.Println("Image: ", item.Spec.NodeName)
+		// log.Println("Image: ", item.Status.HostIP)
 		var readyStatus bool
 		for _, status := range item.Status.ContainerStatuses {
-			log.Println("Status Ready: ", status.Ready)
+			// 	log.Println("Status Ready: ", status.Ready)
 			readyStatus = status.Ready
 		}
-		for _, container := range item.Spec.Containers {
-			log.Println("Container Image: ", container.Image)
-		}
-		log.Println("-----------------")
-		collectionAdding.HostIP = item.Status.HostIP
-		collectionAdding.NodeName = item.Spec.NodeName
-		collectionAdding.Ready = readyStatus
-		// collectionAdding = Collection{
-		// 	NodeName: item.Spec.NodeName,
-		// 	HostIP:   item.Status.HostIP,
-		// 	Ready:    readyStatus,
+		// for _, container := range item.Spec.Containers {
+		// 	log.Println("Container Image: ", container.Image)
 		// }
+		// log.Println("-----------------")
+
+		r := Pod{
+			PodName:  item.GetName(),
+			NodeName: item.Spec.NodeName,
+			HostIP:   item.Status.HostIP,
+			Ready:    readyStatus,
+		}
+		collectionAdding.PodDetails = append(collectionAdding.PodDetails, r)
+
+		//collectionAdding.HostIP = item.Status.HostIP
+		//collectionAdding.NodeName = item.Spec.NodeName
+		//collectionAdding.Ready = readyStatus
+
 	}
 	var postBody []byte
 	postBody, err = json.Marshal(collectionAdding)
